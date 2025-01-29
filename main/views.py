@@ -27,21 +27,46 @@ def Create(request):
     if request.method == 'POST':
         form = ProdutoForm(request.POST)
         if form.is_valid():
-            produto = Produto()
-            produto.nome = form.cleaned_data['nome']
-            produto.codigo = form.cleaned_data['codigo']
-            produto.descricao = form.cleaned_data['descricao']
-            produto.preco = form.cleaned_data['preco']
-            # quantidade
+            produto = Produto(
+                nome=form.cleaned_data['nome'],
+                descricao=form.cleaned_data['descricao'],
+                codigo=form.cleaned_data['codigo'],
+                preco=form.cleaned_data['preco'],
+                quantidade=form.cleaned_data['quantidade'],
+                fornecedor=form.cleaned_data['fornecedor']
+            )
             produto.save()
-            return HttpResponseRedirect(reverse('index'))
-
-        else:
-            form = ProdutoForm(request.POST)
+            produto.categorias.set(form.cleaned_data['categoria'])  # Para ManyToManyField
+            return HttpResponseRedirect(reverse('index.html'))
     else:
         form = ProdutoForm()
 
     return render(request, 'create.html', {'form': form})
 
+def CreateCategoria(request):
+    if request.method == 'POST':
+        form = CategoriaForm(request.POST)
+        if form.is_valid():
+            Categoria.objects.create(nome=form.cleaned_data['nome'])
+            return HttpResponseRedirect(reverse('index.html'))  # Redireciona para a lista de categorias
+    else:
+        form = CategoriaForm()
+
+    return render(request, 'createcategoria.html', {'form': form})
+
+def CreateFornecedor(request):
+    if request.method == 'POST':
+        form = FornecedorForm(request.POST)
+        if form.is_valid():
+            Fornecedor.objects.create(
+                nome=form.cleaned_data['nome'],
+                CNPJ=form.cleaned_data['CNPJ']
+            )
+            return HttpResponseRedirect(reverse('index.html'))
+    else:
+        form = FornecedorForm()
+
+    return render(request, 'createfornecedor.html', {'form': form})
+    
 
 

@@ -21,7 +21,7 @@ class Produto(models.Model):
     preco = models.DecimalField(max_digits=10, decimal_places=2)
     quantidade = models.IntegerField()
     fornecedor = models.ForeignKey(Fornecedor, on_delete=models.CASCADE, default="")
-    categorias = models.ManyToManyField(Categoria, related_name='questions', default="")
+    categorias = models.ManyToManyField(Categoria, related_name='products', default="")
 
     def __str__(self):
         return self.nome
