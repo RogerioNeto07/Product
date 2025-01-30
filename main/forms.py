@@ -14,8 +14,28 @@ class ProdutoForm(forms.Form):
       codigo = self.cleaned_data['codigo']
       if Produto.objects.filter(codigo=codigo).exists():
          raise forms.ValidationError("Já existe um produto com este código.")
+      if not codigo.isalnum():
+         raise forms.ValidationError("o código não pode ter caracteres especiais")
       return codigo
    
+   def clean_preco(self):
+      preco = self.cleaned_data['preco']
+      if preco <= 0:
+         raise forms.ValidationError("O preço deve ser maior que 0.")
+      return preco
+
+   def clean_quantidade(self):
+      quantidade = self.cleaned_data['quantidade']
+      if quantidade < 0:
+         raise forms.ValidationError("A quantidade deve ser maior ou igual a 0.")
+      return quantidade
+   
+   def clean_nome(self):
+      nome = self.cleaned_data['nome']
+      if len(nome) < 3:
+         raise forms.ValidationError("O nome do produto deve ter ao menos 3 caracteres.")
+      return nome
+
 class CategoriaForm(forms.Form):
    nome = forms.CharField(max_length=20)
 

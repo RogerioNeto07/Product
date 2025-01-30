@@ -2,21 +2,40 @@ from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse
 from .models import *
 from .forms import *
+from django.views.generic import TemplateView, ListView
 
-def Index(request):
-    produtos = Produto.objects.all()
-    context = {'produtos': produtos}
-    return render(request, 'index.html', context)
+class IndexView(TemplateView):
+    template_name = 'index.html'
 
-def Categorias(request):
-    categorias = Categoria.objects.all()
-    context = {'categorias': categorias}
-    return render(request, 'categorias.html', context)
+class ProdutosView(ListView):
+    model = Produto
+    template_name = 'produtos.html'
+    context_object_name = 'produtos'
 
-def Fornecedores(request):
-    fornecedores = Fornecedor.objects.all()
-    context = {'fornecedores': fornecedores}
-    return render(request, 'fornecedores.html', context)
+# def Produtos(request):
+#     produtos = Produto.objects.all()
+#     context = {'produtos': produtos}
+#     return render(request, 'produtos.html', context)
+
+class CategoriasView(ListView):
+    model = Categoria
+    template_name = 'categorias.html'
+    context_object_name = 'categorias'
+
+# def Categorias(request):
+#     categorias = Categoria.objects.all()
+#     context = {'categorias': categorias}
+#     return render(request, 'categorias.html', context)
+
+class FornecedoresView(ListView):
+    model = Fornecedor
+    template_name = 'fornecedores.html'
+    context_object_name = 'fornecedores'
+
+# def Fornecedores(request):
+#     fornecedores = Fornecedor.objects.all()
+#     context = {'fornecedores': fornecedores}
+#     return render(request, 'fornecedores.html', context)
 
 def Details(request, produto_id):
    produto = Produto.objects.get(id=produto_id)
@@ -36,8 +55,8 @@ def Create(request):
                 fornecedor=form.cleaned_data['fornecedor']
             )
             produto.save()
-            produto.categorias.set(form.cleaned_data['categoria'])  # Para ManyToManyField
-            return HttpResponseRedirect(reverse('index.html'))
+            produto.categorias.set(form.cleaned_data['categoria'])
+            return HttpResponseRedirect(reverse('produtos.html'))
     else:
         form = ProdutoForm()
 
@@ -48,7 +67,7 @@ def CreateCategoria(request):
         form = CategoriaForm(request.POST)
         if form.is_valid():
             Categoria.objects.create(nome=form.cleaned_data['nome'])
-            return HttpResponseRedirect(reverse('index.html'))  # Redireciona para a lista de categorias
+            return HttpResponseRedirect(reverse('produtos.html'))
     else:
         form = CategoriaForm()
 
@@ -62,7 +81,7 @@ def CreateFornecedor(request):
                 nome=form.cleaned_data['nome'],
                 CNPJ=form.cleaned_data['CNPJ']
             )
-            return HttpResponseRedirect(reverse('index.html'))
+            return HttpResponseRedirect(reverse('produtos.html'))
     else:
         form = FornecedorForm()
 

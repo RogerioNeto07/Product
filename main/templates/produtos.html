@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p><a href="{% url 'index.html' %}">Início</a></p><p><a href="{% url 'fornecedores.html' %}">Fornecedores</a> - <a href="{% url 'createfornecedor.html' %}">Adicionar fornecedor</a></p><p><a href="{% url 'categorias.html' %}">Categorias</a> - <a href="{% url 'createcategoria.html' %}">Adicionar categoria</a></p><p><a href="{% url 'create.html' %}">Adicionar produto</a></p>
+    <h1>Produtos:</h1>
+    {% for produto in produtos %}
+        <h2><a href="{% url 'details.html' produto.id %}">{{produto.nome}}</a></h2>
+    {% endfor %}
+
+</body>
+</html>
