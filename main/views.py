@@ -9,14 +9,30 @@ class IndexView(TemplateView):
 
 class ProdutosView(ListView):
     model = Produto
-    formnome = PesquisaFormNome
-    formpreco = PesquisaFormPreco
     template_name = 'produtos.html'
     context_object_name = 'produtos'
     paginate_by = 5
 
     def get_queryset(self):
-        produtos = Produto.objects.filter(nome="a")
+        queryset = super().get_queryset()
+        nome_pesquisa = self.request.GET.get('nome', '')
+        preco_min = self.request.GET.get('preco_min')
+        preco_max = self.request.GET.get('preco_max')
+        if nome_pesquisa:
+            queryset = queryset.filter(nome__icontains=nome_pesquisa)
+
+        if preco_min:
+            queryset = queryset.filter(preco__gte=preco_min)
+
+        if preco_max:
+            queryset = queryset.filter(preco__lte=preco_max)
+            
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = PesquisaProdutoForm(self.request.GET)
+        return context
 
 class CategoriasView(ListView):
     model = Categoria

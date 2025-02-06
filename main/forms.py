@@ -50,3 +50,18 @@ class PesquisaFormPreco(forms.Form):
    min = models.DecimalField(max_digits=10, decimal_places=2)
    max = models.DecimalField(max_digits=10, decimal_places=2)
 
+class PesquisaProdutoForm(forms.Form):
+    nome = forms.CharField(
+        required=False, 
+        label="Pesquisar Produto", 
+        widget=forms.TextInput(attrs={'placeholder': 'Digite o nome do produto'})
+    )
+    preco_min = forms.DecimalField(
+        required=False, label="Preço Mínimo", min_value=0,
+        widget=forms.NumberInput(attrs={'placeholder': 'Preço mínimo'})
+    )
+    preco_max = forms.DecimalField(
+        required=False, label="Preço Máximo", min_value=0,
+        widget=forms.NumberInput(attrs={'placeholder': 'Preço máximo'})
+    )
+
