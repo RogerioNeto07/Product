@@ -9,33 +9,24 @@ class IndexView(TemplateView):
 
 class ProdutosView(ListView):
     model = Produto
+    formnome = PesquisaFormNome
+    formpreco = PesquisaFormPreco
     template_name = 'produtos.html'
     context_object_name = 'produtos'
+    paginate_by = 5
 
-# def Produtos(request):
-#     produtos = Produto.objects.all()
-#     context = {'produtos': produtos}
-#     return render(request, 'produtos.html', context)
+    def get_queryset(self):
+        produtos = Produto.objects.filter(nome="a")
 
 class CategoriasView(ListView):
     model = Categoria
     template_name = 'categorias.html'
     context_object_name = 'categorias'
 
-# def Categorias(request):
-#     categorias = Categoria.objects.all()
-#     context = {'categorias': categorias}
-#     return render(request, 'categorias.html', context)
-
 class FornecedoresView(ListView):
     model = Fornecedor
     template_name = 'fornecedores.html'
     context_object_name = 'fornecedores'
-
-# def Fornecedores(request):
-#     fornecedores = Fornecedor.objects.all()
-#     context = {'fornecedores': fornecedores}
-#     return render(request, 'fornecedores.html', context)
 
 def Details(request, produto_id):
    produto = Produto.objects.get(id=produto_id)

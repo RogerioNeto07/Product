@@ -43,3 +43,10 @@ class FornecedorForm(forms.Form):
    nome = forms.CharField(max_length=200)
    CNPJ = forms.CharField(max_length=18)
 
+class PesquisaFormNome(forms.Form):
+   nome = forms.CharField(max_length=200)
+
+class PesquisaFormPreco(forms.Form):
+   min = models.DecimalField(max_digits=10, decimal_places=2)
+   max = models.DecimalField(max_digits=10, decimal_places=2)
+
