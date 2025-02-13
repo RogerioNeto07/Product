@@ -9,6 +9,8 @@ class ProdutoForm(forms.Form):
    quantidade = forms.IntegerField()
    fornecedor = forms.ModelChoiceField(queryset=Fornecedor.objects.all())
    categoria = forms.ModelMultipleChoiceField(queryset=Categoria.objects.all())
+   imagem = models.ImageField('Imagem de perfil', upload_to='profile',default=None)
+
 
    def clean_codigo(self):
       codigo = self.cleaned_data['codigo']
