@@ -22,7 +22,7 @@ class Produto(models.Model):
     quantidade = models.IntegerField()
     fornecedor = models.ForeignKey(Fornecedor, on_delete=models.CASCADE, default="")
     categorias = models.ManyToManyField(Categoria, related_name='products', default="")
-    imagem = models.ImageField('Imagem de perfil', upload_to='profile',default=None)
+    imagem = models.ImageField('Imagem do Produto', upload_to='profile', null=True, blank=True)
 
     def __str__(self):
         return self.nome

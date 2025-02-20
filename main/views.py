@@ -1,8 +1,10 @@
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import render, HttpResponseRedirect, redirect
 from django.urls import reverse
 from .models import *
 from .forms import *
 from django.views.generic import TemplateView, ListView
+from django.contrib import messages
+
 
 class IndexView(TemplateView):
     template_name = 'index.html'
@@ -51,7 +53,7 @@ def Details(request, produto_id):
 
 def Create(request):
     if request.method == 'POST':
-        form = ProdutoForm(request.POST)
+        form = ProdutoForm(request.POST, request.FILES)
         if form.is_valid():
             produto = Produto(
                 nome=form.cleaned_data['nome'],
@@ -59,10 +61,12 @@ def Create(request):
                 codigo=form.cleaned_data['codigo'],
                 preco=form.cleaned_data['preco'],
                 quantidade=form.cleaned_data['quantidade'],
-                fornecedor=form.cleaned_data['fornecedor']
+                fornecedor=form.cleaned_data['fornecedor'],
+                imagem=form.cleaned_data['imagem']
             )
             produto.save()
             produto.categorias.set(form.cleaned_data['categoria'])
+            messages.success(request, 'Produto cadastrado com sucesso!')
             return HttpResponseRedirect(reverse('produtos.html'))
     else:
         form = ProdutoForm()

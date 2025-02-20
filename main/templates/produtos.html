@@ -6,6 +6,13 @@
     <title>Document</title>
 </head>
 <body>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" style="background-color: darkseagreen;">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
     <p><a href="{% url 'index.html' %}">Início</a></p><p><a href="{% url 'fornecedores.html' %}">Fornecedores</a> - <a href="{% url 'createfornecedor.html' %}">Adicionar fornecedor</a></p><p><a href="{% url 'categorias.html' %}">Categorias</a> - <a href="{% url 'createcategoria.html' %}">Adicionar categoria</a></p><p><a href="{% url 'create.html' %}">Adicionar produto</a></p>
     <h1>Produtos:</h1>
 
@@ -17,6 +24,11 @@
 
     {% for produto in produtos %}
         <h2><a href="{% url 'details.html' produto.id %}">{{produto.nome}}</a></h2>
+        {% if produto.imagem %}
+        <img style="max-width: 250px;" src="{{ produto.imagem.url }}" alt="{{ produto.nome }}">
+    {% else %}
+        <p>Sem imagem disponível</p>
+    {% endif %}
     {% empty %}
         <h2>Nenhum produto encontrado :(</h2>
     {% endfor %}

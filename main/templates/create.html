@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>cadastrar nova produto</h1>
-<form action="{% url 'create.html' %}" method="post">
+<form action="{% url 'create.html' %}" method="post" enctype="multipart/form-data">
       {%csrf_token%}
       {{form}}
       <button type="submit">Criar</button>
